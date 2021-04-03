@@ -19,102 +19,67 @@ app.get("/test", (request, response) => {
     response.sendFile(__dirname + "/public/test.html");
 });
 
-const todos = [
-    {
-        id: 0, text: "выучить верстку", completed: true, favorite: true
-    },
-    {
-        id: 1, text: "выучить js", completed: true, favorite: true
-    },
-    {
-        id: 2, text: "выучить react", completed: false, favorite: false
-    }
+const verbs = [
+    {en: 'break down', ru: 'ломаться'},
+    {en: 'call back', ru: 'перезвонить'},
+    {en: 'carry on', ru: 'продолжать'},
+    {en: 'figure out', ru: 'понимать'},
+    {en: 'find out', ru: 'выяснять'},
+    {en: 'get away', ru: 'сбегать'},
+    {en: 'get up', ru: 'вставать'},
+    {en: 'look after', ru: 'заботиться'},
+    {en: 'try on', ru: 'примерять'},
+    {en: 'turn into', ru: 'превратиться'},
 ];
 
-const isDefined = value => value !== undefined && value !== null;
+const nouns = [
+    {en: 'air', ru: 'воздух'},
+    {en: 'bottom', ru: 'низ'},
+    {en: 'example', ru: 'пример'},
+    {en: 'side', ru: 'сторона'},
+    {en: 'sentence', ru: 'предложение'},
+    {en: 'story', ru: 'история'},
+    {en: 'top', ru: 'вершина'},
+    {en: 'watch', ru: 'часы'},
+    {en: 'wood', ru: 'лес'},
+    {en: 'word', ru: 'слово'},
+];
 
-app.get("/todos", (request, response) => {
+const prepositions = [
+    {en: 'in', ru: 'в'},
+    {en: 'on', ru: 'на'},
+    {en: 'at', ru: 'около'},
+    {en: 'since', ru: 'с тех пор как'},
+    {en: 'during', ru: 'в течение'},
+    {en: 'from', ru: 'от'},
+    {en: 'to', ru: 'к'},
+    {en: 'between', ru: 'между'},
+    {en: 'behind', ru: 'за'},
+    {en: 'until', ru: 'до'},
+]
+
+app.get("/verbs", (request, response) => {
     response.set({
         'Access-Control-Allow-Origin': '*'
     })
-    response.json(todos);
+    response.json(verbs);
 });
 
-app.get("/todos/:id", (request, response) => {
+app.get("/nouns", (request, response) => {
     response.set({
         'Access-Control-Allow-Origin': '*'
     })
-    const selectedItemId = request.params.id;
-    const selectedItem = todos.find(item => item.id === +selectedItemId);
-    if (!selectedItem) {
-        response.status(400).send("Item not found");
-        return;
-    }
-    response.json(selectedItem);
+    response.json(nouns);
 });
 
-app.post("/todos", (request, response) => {
+app.get("/prepositions", (request, response) => {
     response.set({
         'Access-Control-Allow-Origin': '*'
     })
-    const id = todos[todos.length - 1].id + 1;
-    if (!isDefined(request.body.text)) {
-        response.status(400).send("Item must contain text field");
-        return;
-    }
-    if (!isDefined(request.body.completed)) {
-        response.status(400).send("Item must contain completed field");
-        return;
-    }
-    if (!isDefined(request.body.favorite)) {
-        response.status(400).send("Item must contain favorite field");
-        return;
-    }
-    todos.push({
-        text: request.body.text,
-        completed: request.body.completed,
-        favorite: request.body.favorite,
-        id
-    });
-    response.json({ id });
+    response.json(prepositions);
 });
 
-app.put("/todos/:id", (request, response) => {
-    response.set({
-        'Access-Control-Allow-Origin': '*'
-    })
-    const selectedItemId = request.params.id;
-    const selectedItem = todos.find(item => item.id === +selectedItemId);
-    if (!selectedItem) {
-        response.status(400).send("Item not found");
-        return;
-    }
 
-    if (isDefined(request.body.text)) {
-        selectedItem.text = request.body.text;
-    }
-    if (isDefined(request.body.completed)) {
-        selectedItem.completed = request.body.completed;
-    }
-    if (isDefined(request.body.favorite)) {
-        selectedItem.favorite = request.body.favorite;
-    }
-    response.status(200).send("ok");
-});
-
-app.delete("/todos/:id", (request, response) => {
-    response.set({
-        'Access-Control-Allow-Origin': '*'
-    })
-    const selectedItemId = request.params.id;
-    const selectedItemIndex = todos.findIndex(item => item.id === +selectedItemId);
-    if (selectedItemIndex === -1) {
-        response.status(400).send("Item not found");
-        return;
-    }
-    todos.splice(selectedItemIndex, 1);
-    response.status(200).send("ok");
-});
 
 app.listen(3030, () => {
     console.log("check out the magic at: http://localhost:3030")
