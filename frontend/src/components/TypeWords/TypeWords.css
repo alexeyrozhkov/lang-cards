@@ -24,3 +24,10 @@
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
 }
+.cards-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 960px;
+    margin: auto;
+}

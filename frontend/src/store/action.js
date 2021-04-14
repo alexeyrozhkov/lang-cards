@@ -2,11 +2,17 @@
  * 
  * @param {string} task 
  */
- export function loadWordsActionCreator(tasks) {
+ export function loadWordsActionCreator(words) {
     return {
         type: 'LOAD_WORDS',
         payload: { 
-            tasks: tasks
+            words: words
         }
+    }
+}
+
+export function clearWords() {
+    return {
+        type: 'CLEAR_WORDS'
     }
 }

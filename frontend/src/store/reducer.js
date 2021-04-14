@@ -11,6 +11,12 @@ export function reducer(state=initialState, action) {
                 words: words
             }
         }
+        case 'CLEAR_WORDS': {
+            return {
+                ...state,
+                words: []
+            }
+        }
         default:
             return state;
     }
