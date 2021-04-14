@@ -34,11 +34,16 @@ export class TypeWordsComponent extends React.Component {
                         <button className='button-category prepositions' onClick={this.handleLoadPrepositions}>Prepositions</button>
                     </div>
                     <div className='cards-wrapper'>
-                        {this.props.words.map(word =>
-                            <Card
+                        {this.props.words.map((word,index) => {
+                            if(index >= 5) {
+                                return
+                            }
+                            return <Card
                                 en={word.en}
                                 ru={word.ru}
-                            />)}
+                                isTraning = {true}
+                            />
+                        })}
                     </div>
                  </div>
         
