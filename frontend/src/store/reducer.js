@@ -2,6 +2,7 @@ const initialState = {
     words: []
 };
 
+
 export function reducer(state=initialState, action) {
     switch(action.type) {
         case 'LOAD_WORDS': {
@@ -21,3 +22,4 @@ export function reducer(state=initialState, action) {
             return state;
     }
 }
+

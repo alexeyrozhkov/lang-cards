@@ -7,23 +7,23 @@ import {Card} from '../Card/Card.jsx'
 
 const verbsLink = 'verbs';
 const nounsLink = 'nouns';
-const prepositionsLink = ' prepositions';
+const prepositionsLink = 'prepositions';
 
 export class TypeWordsComponent extends React.Component {
 
     handleLoadVerbs = () => {
-        {this.props.words.length && clearWords()}
-        loadWords(verbsLink);
+        {this.props.words.length && this.props.clearWords()}
+        this.props.loadWords(verbsLink);
     }
 
     handleLoadNouns = () => {
-        {this.props.words.length && clearWords()}
-        loadWords(nounsLink);
+        {this.props.words.length && this.props.clearWords()}
+        this.props.loadWords(nounsLink);
     }
 
     handleLoadPrepositions = () => {
-        {this.props.words.length && clearWords()}
-        loadWords(prepositionsLink);
+        {this.props.words.length && this.props.clearWords()}
+        this.props.loadWords(prepositionsLink);
     }
     
     render() {
@@ -34,15 +34,11 @@ export class TypeWordsComponent extends React.Component {
                         <button className='button-category prepositions' onClick={this.handleLoadPrepositions}>Prepositions</button>
                     </div>
                     <div className='cards-wrapper'>
-                        {this.props.words.map((word,index) => {
-                            if(index >= 5) {
-                                return;
-                            }
+                        {this.props.words.map(word =>
                             <Card
-                            en={word.en}
-                            ru={word.ru}
-                            />
-                        })}
+                                en={word.en}
+                                ru={word.ru}
+                            />)}
                     </div>
                  </div>
         
