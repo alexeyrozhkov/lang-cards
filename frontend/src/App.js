@@ -1,24 +1,11 @@
 import React from 'react';
 import './App.css';
-import {ModeButtons} from './components/ModeButtons/ModeButtons.jsx';
-import {TypeWords} from './components/TypeWords/TypeWords.jsx'
+import {WordManager} from './components/WordManager/WordManager.jsx'
 
-export class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      screen: 'type-words'
-    }
-  }
-  render() {
-    return (
-      <div className='main'>
-        {this.state.screen === 'modebuttons' && <ModeButtons/>}
-        {this.state.screen === 'type-words' && <TypeWords />}
-      </div>
-      
-    )
-  }
+function App() {
+  return (
+    <WordManager/>
+  );
 }
 
 export default App;
