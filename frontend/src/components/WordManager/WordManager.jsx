@@ -12,11 +12,11 @@ const verbsLink = 'verbs';
 const nounsLink = 'nouns';
 const prepositionsLink = 'prepositions';
 
+
 class WordManagerComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            stateWords: this.props.words,
             screen: 'modebuttons',
             isPractice: false,
             isTraining: false
@@ -29,6 +29,7 @@ class WordManagerComponent extends React.Component {
     loadWordsType(type) {
         {this.props.words.length && this.props.clearWords()}
         this.props.loadWords(type);
+        this.setState({screen: 'cards'})
     }
 
     choosePractice() {
@@ -56,6 +57,16 @@ class WordManagerComponent extends React.Component {
                     loadNouns = {() => this.loadWordsType(nounsLink)}
                     loadPrepositions = { () => this.loadWordsType(prepositionsLink)}
                 />}
+               <div className="cards-wrapper">
+                    {this.state.screen === 'cards' && this.props.words.slice(0, 5).map(word => 
+                        <Card
+                            key={word.en}
+                            en={word.en}
+                            ru={word.ru}
+                            isTraning={this.state.isTraining}
+                            isPractice={this.state.isPractice}
+                        />)}
+               </div>
             </div>
         )
     }
