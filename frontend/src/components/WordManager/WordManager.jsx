@@ -12,18 +12,21 @@ const verbsLink = 'verbs';
 const nounsLink = 'nouns';
 const prepositionsLink = 'prepositions';
 
+const modeLearn = 'learn';
+const modeTest = 'test';
+
+
+
 
 class WordManagerComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             screen: 'modebuttons',
-            isPractice: false,
-            isTraining: false
+            mode: ''
         }
-        this.choosePractice = this.choosePractice.bind(this);
-        this.chooseTraining = this.chooseTraining.bind(this);
         this.loadWordsType = this.loadWordsType.bind(this);
+        this.chooseMode = this.chooseMode.bind(this);
     }
 
     loadWordsType(type) {
@@ -32,25 +35,19 @@ class WordManagerComponent extends React.Component {
         this.setState({screen: 'cards'})
     }
 
-    choosePractice() {
+    chooseMode(mode) {
         this.setState({
-            isTraining: false,
-            isPractice: true,
-            screen: 'select-vocsbulary'
+            screen: 'select-vocsbulary',
+            mode: mode
         })
+        
     }
-    chooseTraining() {
-        this.setState({
-            isTraining: true,
-            isPractice: false,
-            screen: 'select-vocsbulary'
-        })
-    }
+
 
     render() {
         return (
             <div className='main'>
-                {this.state.screen === 'modebuttons' && <ModeButtons choosePractice={this.choosePractice} chooseTraining={this.chooseTraining}/>}
+                {this.state.screen === 'modebuttons' && <ModeButtons chooseTesting={() => this.chooseMode(modeTest)} chooseLearning={() => this.chooseMode(modeLearn)}/>}
                 {this.state.screen === 'select-vocsbulary' && 
                 <SelectVocabulary
                     loadVerbs = {() => this.loadWordsType(verbsLink)}
@@ -63,8 +60,8 @@ class WordManagerComponent extends React.Component {
                             key={word.en}
                             en={word.en}
                             ru={word.ru}
-                            isTraning={this.state.isTraining}
-                            isPractice={this.state.isPractice}
+                            isLearning={this.state.mode === 'learn'}
+                            isTesting={this.state.mode === 'test'}
                         />)}
                </div>
             </div>
