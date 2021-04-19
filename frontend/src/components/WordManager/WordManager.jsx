@@ -1,7 +1,7 @@
 import './WordManager.css';
 import React from 'react';
 import {loadWords} from '../../store/middleware';
-import {clearWords} from '../../store/action'
+import {clearWords, learnAword} from '../../store/action'
 import { connect } from 'react-redux';
 import {Card} from '../Card/Card.jsx';
 import {ModeButtons} from '../ModeButtons/ModeButtons.jsx';
@@ -27,6 +27,7 @@ class WordManagerComponent extends React.Component {
         }
         this.loadWordsType = this.loadWordsType.bind(this);
         this.chooseMode = this.chooseMode.bind(this);
+        this.handleLearnAword = this.handleLearnAword.bind(this);
     }
 
     loadWordsType(type) {
@@ -41,6 +42,10 @@ class WordManagerComponent extends React.Component {
             mode: mode
         })
         
+    }
+
+    handleLearnAword(id) {
+        {this.state.mode === 'learn' && this.props.learnAword(id)}
     }
 
 
@@ -62,6 +67,7 @@ class WordManagerComponent extends React.Component {
                             ru={word.ru}
                             isLearning={this.state.mode === 'learn'}
                             isTesting={this.state.mode === 'test'}
+                            learnAword={() => this.handleLearnAword(word.id)}
                         />)}
                </div>
             </div>
@@ -77,7 +83,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
     loadWords: loadWords,
-    clearWords: clearWords
+    clearWords: clearWords,
+    learnAword: learnAword
 }
 
 const WordManager = connect(mapStateToProps, mapDispatchToProps)(WordManagerComponent);

@@ -16,3 +16,17 @@ export function clearWords() {
         type: 'CLEAR_WORDS'
     }
 }
+
+/**
+ * 
+ * @param {string} id
+ */
+
+export function learnAword(id) {
+    return {
+        type: 'LEARN_A_WORD',
+        payload: {
+            id: id
+        }
+    }
+}

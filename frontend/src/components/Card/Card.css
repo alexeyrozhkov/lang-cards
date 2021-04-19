@@ -4,6 +4,9 @@
     margin-bottom: 20px;
     width: 200px;
 }
+.card:hover {
+    cursor: pointer;
+}
 .word-en {
     display: flex;
     justify-content: center;
