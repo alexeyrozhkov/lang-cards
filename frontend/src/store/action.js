@@ -1,6 +1,6 @@
 /**
  * 
- * @param {string} task 
+ * @param {string} words 
  */
  export function loadWordsActionCreator(words) {
     return {
@@ -11,11 +11,6 @@
     }
 }
 
-export function clearWords() {
-    return {
-        type: 'CLEAR_WORDS'
-    }
-}
 
 /**
  * 
@@ -27,6 +22,20 @@ export function learnAword(id) {
         type: 'LEARN_A_WORD',
         payload: {
             id: id
+        }
+    }
+}
+
+/**
+ * 
+ * @param {string} theme
+ */
+
+export function setCurrentThemeAC(theme) {
+    return {
+        type: 'SET_CURRENT_THEME',
+        payload: {
+            theme: theme
         }
     }
 }

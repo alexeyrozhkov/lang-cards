@@ -1,8 +1,8 @@
-import {loadWordsActionCreator} from './action';
+import {loadWordsActionCreator, setCurrentThemeAC} from './action';
 
 const url = 'http://localhost:3030';
 
-export function loadWords(type) {
+export function loadWords(type,theme) {
     return function (dispatch) {
         fetch(`${url}/${type}`)
         .then(data => {
@@ -13,6 +13,7 @@ export function loadWords(type) {
         })
         .then((data) => data.json())
         .then((data) => {
+            dispatch(setCurrentThemeAC(theme))
             dispatch(loadWordsActionCreator(data))
         })
         .catch(e => console.error(e))
