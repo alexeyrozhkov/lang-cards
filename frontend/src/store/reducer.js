@@ -1,11 +1,17 @@
 const initialState = {
     current_theme: '',
-    words_verbs: [],
-    words_nouns: [],
-    words_prepositions: [],
-    completed_words_verbs: [],
-    completed_words_nouns: [],
-    completed_words_prepositions: []
+    verbs: {
+        completed: [],
+        uncompleted: []
+    },
+    nouns: {
+        completed: [],
+        uncompleted: []
+    },
+    prepositions: {
+        completed: [],
+        uncompleted: []
+    }
 };
 
 
@@ -21,36 +27,36 @@ export function reducer(state=initialState, action) {
             })
 
             if(state.current_theme === 'theme_verbs') {
-                if(state.words_verbs.length) {
+                if(state.verbs.uncompleted.length) {
                     return {
                         ...state
                     }
                 }
                 return {
                     ...state,
-                    words_verbs: words
+                    verbs: { ...state.verbs, uncompleted: words}
                 }
             }
             if(state.current_theme === 'theme_nouns') {
-                if(state.words_nouns.length) {
+                if(state.nouns.uncompleted.length) {
                     return {
                         ...state
                     }
                 }
                 return {
                     ...state,
-                    words_nouns: words
+                    nouns: {...state.verbs, uncompleted: words}
                 }
             }
             if(state.current_theme === 'theme_prepositions') {
-                if(state.words_prepositions.length) {
+                if(state.prepositions.uncompleted.length) {
                     return {
                         ...state
                     }
                 }
                 return {
                     ...state,
-                    words_prepositions: words
+                    prepositions: {...state.prepositions, uncompleted: words}
                 }
             }
         }
@@ -60,54 +66,51 @@ export function reducer(state=initialState, action) {
             const {id} = action.payload;
 
             if(state.current_theme === 'theme_verbs') {
-                const result = processWords([...state.words_verbs], [...state.completed_words_verbs], id);
+                const result = processWords([...state.verbs.uncompleted], [...state.verbs.completed], id);
                 const completed = result.completed;
                 const uncompleted = result.uncompleted;
-                if(completed === undefined) {
+                if(!completed) {
                     return {
                         ...state,
-                        words_verbs: uncompleted
+                        verbs: {...state.verbs, uncompleted: uncompleted}
                     }
                 }
                 
                 return {
                     ...state,
-                    words_verbs: uncompleted,
-                    completed_words_verbs: completed
+                    verbs: {...state.verbs, uncompleted: uncompleted, completed: completed}
                 }
             }
             
             if(state.current_theme === 'theme_nouns') {
-                const result = processWords([...state.words_nouns], [...state.completed_words_nouns], id);
+                const result = processWords([...state.nouns.uncompleted], [...state.nouns.completed], id);
                 const completed = result.completed;
                 const uncompleted = result.uncompleted;
-                if(completed === undefined) {
+                if(!completed) {
                     return {
                         ...state,
-                        words_nouns: uncompleted
+                        nouns: {...state.nouns, uncompleted: uncompleted}
                     }
                 }
                 return {
                     ...state,
-                    words_nouns: uncompleted,
-                    completed_words_nouns: completed
+                    nouns: {...state.nouns, uncompleted: uncompleted, completed: completed}
                 }
             }
 
             if(state.current_theme === 'theme_prepositions') {
-                const result = processWords([...state.words_prepositions], [...state.completed_words_prepositions], id);
+                const result = processWords([...state.prepositions.uncompleted], [...state.prepositions.completed], id);
                 const completed = result.completed;
                 const uncompleted = result.uncompleted;
-                if(completed === undefined) {
+                if(!completed) {
                     return {
                         ...state,
-                        words_prepositions: uncompleted
+                        prepositions: {...state.prepositions, uncompleted: uncompleted}
                     }
                 }
                 return {
                     ...state,
-                    words_prepositions: uncompleted,
-                    completed_words_prepositions: completed
+                    prepositions: {...state.prepositions, uncompleted: uncompleted, completed: completed}
                 }
             }
         }
