@@ -42,9 +42,17 @@ export function reducer(state=initialState, action) {
             const {id} = action.payload;
 
             if(state.current_theme === 'theme_verbs') {
+                const indexWord = state.words_verbs.findIndex(word => word.id === id);
                 const word = state.words_verbs.find(word => word.id === id);
                 word.count+=1;
-                const indexWord = state.words_verbs.findIndex(word => word.id === id);
+                if(word.count === 5) {
+                    state.words_verbs.splice(indexWord, 1);
+                    const completedWords = [...state.completed_words_verbs, word];
+                    return {
+                        ...state,
+                        completed_words_verbs: completedWords
+                    }
+                }
                 state.words_verbs.splice(indexWord, 1);
                 const updatedWords = [...state.words_verbs, word];
                 return {
@@ -54,9 +62,17 @@ export function reducer(state=initialState, action) {
             }
             
             if(state.current_theme === 'theme_nouns') {
+                const indexWord = state.words_nouns.findIndex(word => word.id === id);
                 const word = state.words_nouns.find(word => word.id === id);
                 word.count+=1;
-                const indexWord = state.words_nouns.findIndex(word => word.id === id);
+                if(word.count === 5) {
+                    state.words_nouns.splice(indexWord, 1);
+                    const completedWords = [...state.completed_words_nouns, word];
+                    return {
+                        ...state,
+                        completed_words_nouns: completedWords
+                    }
+                }
                 state.words_nouns.splice(indexWord, 1);
                 const updatedWords = [...state.words_nouns, word];
                 return {
@@ -66,9 +82,18 @@ export function reducer(state=initialState, action) {
             }
 
             if(state.current_theme === 'theme_prepositions') {
+                const indexWord = state.words_prepositions.findIndex(word => word.id === id);
                 const word = state.words_prepositions.find(word => word.id === id);
                 word.count+=1;
-                const indexWord = state.words_prepositions.findIndex(word => word.id === id);
+                if(word.count === 5) {
+                    state.words_prepositions.splice(indexWord, 1);
+                    const completedWords = [...state.completed_words_prepositions, word];
+                    return {
+                        ...state,
+                        completed_words_prepositions: completedWords
+                    }
+                }
+               
                 state.words_prepositions.splice(indexWord, 1);
                 const updatedWords = [...state.words_prepositions, word];
                 return {

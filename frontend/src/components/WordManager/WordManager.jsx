@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import {Card} from '../Card/Card.jsx';
 import {ModeButtons} from '../ModeButtons/ModeButtons.jsx';
 import {SelectVocabulary} from '../SelectVocabulary/SelectVocabulary.jsx';
+import {BackButton} from '../BackButton/BackButtton.jsx';
 
 
 const verbsLink = 'verbs';
@@ -33,6 +34,7 @@ class WordManagerComponent extends React.Component {
         this.chooseMode = this.chooseMode.bind(this);
         this.handleLearnAword = this.handleLearnAword.bind(this);
         this.renderThemeWords = this.renderThemeWords.bind(this);
+        this.handleClickBack = this.handleClickBack.bind(this);
     }
 
     loadWordsType(type, theme) {
@@ -42,7 +44,7 @@ class WordManagerComponent extends React.Component {
 
     chooseMode(mode) {
         this.setState({
-            screen: 'select-vocsbulary',
+            screen: 'select-vocabulary',
             mode: mode
         })
         
@@ -55,45 +57,87 @@ class WordManagerComponent extends React.Component {
     renderThemeWords(param) {
         switch(param) {
             case 'theme_verbs': {
-                return this.props.words_verbs.slice(0, 5).map(word => 
-                    <Card
-                        key={word.en}
-                        en={word.en}
-                        ru={word.ru}
-                        mode = {this.state.mode}
-                        learnAword={() => this.handleLearnAword(word.id)}
-                    />)
+                if(this.state.mode === 'test') {
+                    return this.props.completed_words_verbs.slice(0, 5).map(word => 
+                        <Card
+                            key={word.en}
+                            en={word.en}
+                            ru={word.ru}
+                            mode = {this.state.mode}
+                        />)
+                }
+                if(this.state.mode === 'learn') {
+                    return this.props.words_verbs.slice(0, 5).map(word => 
+                        <Card
+                            key={word.en}
+                            en={word.en}
+                            ru={word.ru}
+                            mode = {this.state.mode}
+                            learnAword={() => this.handleLearnAword(word.id)}
+                        />)
+                }
             }
             case 'theme_nouns': {
-                return this.props.words_nouns.slice(0, 5).map(word => 
-                    <Card
-                        key={word.en}
-                        en={word.en}
-                        ru={word.ru}
-                        mode = {this.state.mode}
-                        learnAword={() => this.handleLearnAword(word.id)}
-                    />)
+                if(this.state.mode === 'test') {
+                    return this.props.completed_words_nouns.slice(0, 5).map(word => 
+                        <Card
+                            key={word.en}
+                            en={word.en}
+                            ru={word.ru}
+                            mode = {this.state.mode}
+                        />)
+                }
+
+                if(this.state.mode === 'learn') {
+                    return this.props.words_nouns.slice(0, 5).map(word => 
+                        <Card
+                            key={word.en}
+                            en={word.en}
+                            ru={word.ru}
+                            mode = {this.state.mode}
+                            learnAword={() => this.handleLearnAword(word.id)}
+                        />)
+                }
             }
             case 'theme_prepositions': {
-                return this.props.words_prepositions.slice(0, 5).map(word => 
-                    <Card
-                        key={word.en}
-                        en={word.en}
-                        ru={word.ru}
-                        mode = {this.state.mode}
-                        learnAword={() => this.handleLearnAword(word.id)}
-                    />)
+                if(this.state.mode === 'test') {
+                    return this.props.completed_words_prepositions.slice(0, 5).map(word => 
+                        <Card
+                            key={word.en}
+                            en={word.en}
+                            ru={word.ru}
+                            mode = {this.state.mode}
+                        />)
+                }
+
+                if(this.state.mode === 'learn') {
+                    return this.props.words_prepositions.slice(0, 5).map(word => 
+                        <Card
+                            key={word.en}
+                            en={word.en}
+                            ru={word.ru}
+                            mode = {this.state.mode}
+                            learnAword={() => this.handleLearnAword(word.id)}
+                        />)
+                }
             }
             
         }
     }
-
+    handleClickBack() {
+        if(this.state.screen === 'cards') {
+            this.setState({screen: 'select-vocabulary'})
+        }
+        if(this.state.screen === 'select-vocabulary') {
+            this.setState({screen: 'modebuttons'})
+        }
+    }
 
     render() {
         return (
             <div className='main'>
                 {this.state.screen === 'modebuttons' && <ModeButtons chooseTesting={() => this.chooseMode(modeTest)} chooseLearning={() => this.chooseMode(modeLearn)}/>}
-                {this.state.screen === 'select-vocsbulary' && 
+                {this.state.screen === 'select-vocabulary' && 
                 <SelectVocabulary
                     loadVerbs = {() => this.loadWordsType(verbsLink, theme_verbs)}
                     loadNouns = {() => this.loadWordsType(nounsLink, theme_nouns)}
@@ -102,6 +146,7 @@ class WordManagerComponent extends React.Component {
                <div className="cards-wrapper">
                     {this.state.screen === 'cards' && this.renderThemeWords(this.props.current_theme)}
                </div>
+               <BackButton disabled={this.state.mode === 'modebuttons'} clickBack={() => this.handleClickBack()} />
             </div>
         )
     }
