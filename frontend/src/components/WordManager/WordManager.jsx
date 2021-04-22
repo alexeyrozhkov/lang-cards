@@ -23,7 +23,7 @@ const theme_prepositions = 'theme_prepositions'
 
 
 
-
+let words;
 class WordManagerComponent extends React.Component {
     constructor(props) {
         super(props);
@@ -55,7 +55,37 @@ class WordManagerComponent extends React.Component {
     handleLearnAword(id) {
         {this.state.mode === 'learn' && this.props.learnAword(id)}
     }
-    
+    renderThemeWords(param) {
+        switch(param) {
+            case 'theme_verbs': {
+                if(this.state.mode === 'test') {
+                    words = this.props.verbs.completed;
+                }
+                if(this.state.mode === 'learn') {
+                    words = this.props.verbs.uncompleted;
+                }
+            }
+            case 'theme_nouns': {
+                if(this.state.mode === 'test') {
+                    words = this.props.nouns.completed;
+                }
+
+                if(this.state.mode === 'learn') {
+                    words = this.props.nouns.uncompleted;
+                }
+            }
+            case 'theme_prepositions': {
+                if(this.state.mode === 'test') {
+                    words = this.props.prepositions.completed;
+                }
+
+                if(this.state.mode === 'learn') {
+                    words = this.props.prepositions.uncompleted;
+                }
+            }
+            
+        }
+    }
     handleClickBack() {
         if(this.state.screen === 'cards') {
             this.setState({screen: 'select-vocabulary'})
@@ -67,38 +97,8 @@ class WordManagerComponent extends React.Component {
 
     render() {
         
-        let words;
-        renderThemeWords(param) {
-            switch(param) {
-                case 'theme_verbs': {
-                    if(this.state.mode === 'test') {
-                        words = this.props.verbs.completed;
-                    }
-                    if(this.state.mode === 'learn') {
-                        words = this.props.verbs.uncompleted;
-                    }
-                }
-                case 'theme_nouns': {
-                    if(this.state.mode === 'test') {
-                        words = this.props.nouns.completed;
-                    }
-    
-                    if(this.state.mode === 'learn') {
-                        words = this.props.nouns.uncompleted;
-                    }
-                }
-                case 'theme_prepositions': {
-                    if(this.state.mode === 'test') {
-                        words = this.props.prepositions.completed;
-                    }
-    
-                    if(this.state.mode === 'learn') {
-                        words = this.props.prepositions.uncompleted;
-                    }
-                }
-                
-            }
-        }
+
+
         return (
             <div className='main'>
                 {this.state.screen === 'modebuttons' && <ModeButtons chooseTesting={() => this.chooseMode(modeTest)} chooseLearning={() => this.chooseMode(modeLearn)}/>}
