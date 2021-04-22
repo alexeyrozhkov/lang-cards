@@ -21,18 +21,33 @@ export function reducer(state=initialState, action) {
             })
 
             if(state.current_theme === 'theme_verbs') {
+                if(state.words_verbs.length) {
+                    return {
+                        ...state
+                    }
+                }
                 return {
                     ...state,
                     words_verbs: words
                 }
             }
             if(state.current_theme === 'theme_nouns') {
+                if(state.words_nouns.length) {
+                    return {
+                        ...state
+                    }
+                }
                 return {
                     ...state,
                     words_nouns: words
                 }
             }
             if(state.current_theme === 'theme_prepositions') {
+                if(state.words_prepositions.length) {
+                    return {
+                        ...state
+                    }
+                }
                 return {
                     ...state,
                     words_prepositions: words
