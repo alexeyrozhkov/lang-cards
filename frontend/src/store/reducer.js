@@ -9,6 +9,8 @@ const initialState = {
 };
 
 
+
+
 export function reducer(state=initialState, action) {
     switch(action.type) {
         case 'LOAD_WORDS': {
@@ -39,74 +41,62 @@ export function reducer(state=initialState, action) {
         }
     
         case 'LEARN_A_WORD': {
+            
             const {id} = action.payload;
 
             if(state.current_theme === 'theme_verbs') {
-                const indexWord = state.words_verbs.findIndex(word => word.id === id);
-                const word = state.words_verbs.find(word => word.id === id);
-                word.count+=1;
-                if(word.count === 5) {
-                    state.words_verbs.splice(indexWord, 1);
-                    const completedWords = [...state.completed_words_verbs, word];
+                const result = processWords([...state.words_verbs], [...state.completed_words_verbs], id);
+                const completed = result.completed;
+                const uncompleted = result.uncompleted;
+                if(completed === undefined) {
                     return {
                         ...state,
-                        completed_words_verbs: completedWords
+                        words_verbs: uncompleted
                     }
                 }
-                state.words_verbs.splice(indexWord, 1);
-                const updatedWords = [...state.words_verbs, word];
+                
                 return {
                     ...state,
-                    words_verbs: updatedWords
+                    words_verbs: uncompleted,
+                    completed_words_verbs: completed
                 }
             }
             
             if(state.current_theme === 'theme_nouns') {
-                const indexWord = state.words_nouns.findIndex(word => word.id === id);
-                const word = state.words_nouns.find(word => word.id === id);
-                word.count+=1;
-                if(word.count === 5) {
-                    state.words_nouns.splice(indexWord, 1);
-                    const completedWords = [...state.completed_words_nouns, word];
+                const result = processWords([...state.words_nouns], [...state.completed_words_nouns], id);
+                const completed = result.completed;
+                const uncompleted = result.uncompleted;
+                if(completed === undefined) {
                     return {
                         ...state,
-                        completed_words_nouns: completedWords
+                        words_nouns: uncompleted
                     }
                 }
-                state.words_nouns.splice(indexWord, 1);
-                const updatedWords = [...state.words_nouns, word];
                 return {
                     ...state,
-                    words_nouns: updatedWords
+                    words_nouns: uncompleted,
+                    completed_words_nouns: completed
                 }
             }
 
             if(state.current_theme === 'theme_prepositions') {
-                const indexWord = state.words_prepositions.findIndex(word => word.id === id);
-                const word = state.words_prepositions.find(word => word.id === id);
-                word.count+=1;
-                if(word.count === 5) {
-                    state.words_prepositions.splice(indexWord, 1);
-                    const completedWords = [...state.completed_words_prepositions, word];
+                const result = processWords([...state.words_prepositions], [...state.completed_words_prepositions], id);
+                const completed = result.completed;
+                const uncompleted = result.uncompleted;
+                if(completed === undefined) {
                     return {
                         ...state,
-                        completed_words_prepositions: completedWords
+                        words_prepositions: uncompleted
                     }
                 }
-               
-                state.words_prepositions.splice(indexWord, 1);
-                const updatedWords = [...state.words_prepositions, word];
                 return {
                     ...state,
-                    words_prepositions: updatedWords
+                    words_prepositions: uncompleted,
+                    completed_words_prepositions: completed
                 }
             }
-            
-    
-            
-
-           
         }
+
         case 'SET_CURRENT_THEME': {
             const {theme} = action.payload;
             return {
@@ -119,3 +109,22 @@ export function reducer(state=initialState, action) {
     }
 }
 
+function processWords(uncompleted, completed, id) {
+    const indexWord = uncompleted.findIndex(word => word.id === id);
+    const word = uncompleted.find(word => word.id === id);
+    word.count+=1;
+    if(word.count === 5) {
+        const uncompletedWords = [...uncompleted]
+        uncompletedWords.splice(indexWord, 1);
+        const completedWords = [...completed, word];
+        return {
+            completed: completedWords,
+            uncompleted: uncompletedWords
+        }
+    }
+    uncompleted.splice(indexWord, 1);
+    const updatedWords = [...uncompleted, word];
+    return {
+        uncompleted: updatedWords
+    }
+}

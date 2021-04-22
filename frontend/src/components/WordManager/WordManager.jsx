@@ -38,8 +38,9 @@ class WordManagerComponent extends React.Component {
     }
 
     loadWordsType(type, theme) {
+       {this.state.mode === modeLearn &&  
         this.props.loadWords(type, theme);
-        this.setState({screen: 'cards'})
+        this.setState({screen: 'cards'}) }
     }
 
     chooseMode(mode) {
