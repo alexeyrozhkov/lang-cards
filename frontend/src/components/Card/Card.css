@@ -16,6 +16,16 @@
     height: 150px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    transition: all 0.5s ease-in;
+}
+.done {
+    background-color: greenyellow;
+    transition: all 0.5s ease-in;
+}
+.failed {
+    background-color: red;
+    color: white;
+    transition: all 0.5s ease-in;
 }
 .word-en.completed {
     border-bottom-left-radius: 10px;

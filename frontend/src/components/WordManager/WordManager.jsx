@@ -1,7 +1,7 @@
 import './WordManager.css';
 import React from 'react';
 import {loadWords} from '../../store/middleware';
-import {learnAword, testDoneAC, testFailedAC} from '../../store/action'
+import {learnAword} from '../../store/action'
 import { connect } from 'react-redux';
 import {Card} from '../Card/Card.jsx';
 import {ModeButtons} from '../ModeButtons/ModeButtons.jsx';
@@ -23,14 +23,12 @@ const theme_prepositions = 'theme_prepositions'
 
 
 
-let words;
 class WordManagerComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             screen: 'modebuttons',
-            mode: '',
-            text: ''
+            mode: ''
         }
         this.loadWordsType = this.loadWordsType.bind(this);
         this.chooseMode = this.chooseMode.bind(this);
@@ -52,29 +50,6 @@ class WordManagerComponent extends React.Component {
         })
         
     }
-    handleChange = (e) => {
-        const value = e.target.value;
-        this.setState({text: value});
-    }
-
-    checkingValues = (item,event) => {
-        event.preventDefault();
-        let form = event.target;
-        const value = item.ru;
-        const id = item.id;
-        if(value === this.state.text) {
-            console.log('good')
-            this.setState({text: ''})
-            form.value = '';
-            this.props.testDoneAC(id)
-        }else {
-            console.log('bad');
-            form.value = ''
-            setTimeout(() => form.value = '', 1000);
-            this.props.testFailedAC(id);
-        }
-    }
-
     handleLearnAword(id) {
         {this.state.mode === 'learn' && this.props.learnAword(id)}
     }
@@ -88,8 +63,6 @@ class WordManagerComponent extends React.Component {
                             en={word.en}
                             ru={word.ru}
                             mode = {this.state.mode}
-                            onChange ={this.handleChange}
-                            onBlur = {(event) => this.checkingValues(word, event)}
                         />)
                 }
                 if(this.state.mode === 'learn') {
@@ -114,8 +87,6 @@ class WordManagerComponent extends React.Component {
                         en={word.en}
                         ru={word.ru}
                         mode = {this.state.mode}
-                        onChange ={this.handleChange}
-                        onBlur = {(event) => this.checkingValues(word, event)}
                     />)
                 }
 
@@ -139,8 +110,6 @@ class WordManagerComponent extends React.Component {
                             en={word.en}
                             ru={word.ru}
                             mode = {this.state.mode}
-                            onChange ={this.handleChange}
-                            onBlur = {(event) => this.checkingValues(word, event)}
                         />)
                 }
 
@@ -204,10 +173,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
     loadWords: loadWords,
-    learnAword: learnAword,
-    testFailedAC: testFailedAC,
-    testDoneAC: testDoneAC
-
+    learnAword: learnAword
 }
 
 const WordManager = connect(mapStateToProps, mapDispatchToProps)(WordManagerComponent);
