@@ -44,7 +44,7 @@ class CardComponent extends React.Component {
     return <div className='card' onClick={learnAword}>
             <div className={enClassName}>{en}</div>
             {mode === 'learn' && <div className='word-en-translate'>{ru}</div>}
-            {mode === 'test' && <form onBlur={(event) => this.checkingValues(ru, en, event)}> <input type='text' className='input-translate' onChange={this.handleChange}/></form>}
+            {mode === 'test' &&  <input type='text' className='input-translate' onChange={this.handleChange} onBlur={(event) => this.checkingValues(ru, en, event)}/>}
     </div>
     }
 }
