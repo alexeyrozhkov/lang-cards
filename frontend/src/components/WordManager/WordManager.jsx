@@ -20,7 +20,11 @@ const theme_verbs = 'theme_verbs';
 const theme_nouns = 'theme_nouns';
 const theme_prepositions = 'theme_prepositions'
 
-
+const themeMap = {
+    theme_verbs: 'verbs',
+    theme_nouns: 'nouns',
+    theme_prepositions: 'prepositions'
+}
 
 
 class WordManagerComponent extends React.Component {
@@ -35,6 +39,7 @@ class WordManagerComponent extends React.Component {
         this.handleLearnAword = this.handleLearnAword.bind(this);
         this.renderThemeWords = this.renderThemeWords.bind(this);
         this.handleClickBack = this.handleClickBack.bind(this);
+        this.renderCards = this.renderCards.bind(this);
     }
     
     loadWordsType(type, theme) {
@@ -53,81 +58,31 @@ class WordManagerComponent extends React.Component {
     handleLearnAword(id) {
         {this.state.mode === 'learn' && this.props.learnAword(id)}
     }
-    renderThemeWords(param) {
-        switch(param) {
-            case 'theme_verbs': {
-                if(this.state.mode === 'test') {
-                    return this.props.verbs.completed.slice(0, 5).map(word => 
-                        <Card
-                            key={word.en}
-                            en={word.en}
-                            ru={word.ru}
-                            mode = {this.state.mode}
-                        />)
-                }
-                if(this.state.mode === 'learn') {
-                    
-                    return this.props.verbs.uncompleted.slice(0, 5).map(word => 
-                        <Card
-                            key={word.en}
-                            en={word.en}
-                            ru={word.ru}
-                            mode = {this.state.mode}
-                            learnAword={() => this.handleLearnAword(word.id)}
-                        />)
-                    
-                }
-                break;
-            }
-            case 'theme_nouns': {
-                if(this.state.mode === 'test') {
-                   return this.props.nouns.completed.slice(0, 5).map(word => 
-                    <Card
-                        key={word.en}
-                        en={word.en}
-                        ru={word.ru}
-                        mode = {this.state.mode}
-                    />)
-                }
-
-                if(this.state.mode === 'learn') {
-                    return this.props.nouns.uncompleted.slice(0, 5).map(word => 
-                        <Card
-                            key={word.en}
-                            en={word.en}
-                            ru={word.ru}
-                            mode = {this.state.mode}
-                            learnAword={() => this.handleLearnAword(word.id)}
-                        />)
-                }
-                break;
-            }
-            case 'theme_prepositions': {
-                if(this.state.mode === 'test') {
-                   return this.props.prepositions.completed.slice(0, 5).map(word => 
-                        <Card
-                            key={word.en}
-                            en={word.en}
-                            ru={word.ru}
-                            mode = {this.state.mode}
-                        />)
-                }
-
-                if(this.state.mode === 'learn') {
-                    
-                   return this.props.prepositions.uncompleted.slice(0, 5).map(word => 
-                        <Card
-                            key={word.en}
-                            en={word.en}
-                            ru={word.ru}
-                            mode = {this.state.mode}
-                            learnAword={() => this.handleLearnAword(word.id)}
-                        />)
-                }
-                break;
-            }
-            default: break;
+    renderCards(theme) {
+        const field = themeMap[theme];
+        if(this.state.mode === 'test') {
+            return this.props[field].completed.slice(0, 5).map(word => 
+                <Card
+                    key={word.en}
+                    en={word.en}
+                    ru={word.ru}
+                    mode = {this.state.mode}
+                />)
         }
+        if(this.state.mode === 'learn') {
+            return this.props[field].uncompleted.slice(0, 5).map(word => 
+                <Card
+                    key={word.en}
+                    en={word.en}
+                    ru={word.ru}
+                    mode = {this.state.mode}
+                    learnAword={() => this.handleLearnAword(word.id)}
+                />)
+            
+        }
+    }
+    renderThemeWords(param) {
+        return this.renderCards(param)
     }
     handleClickBack() {
         if(this.state.screen === 'cards') {
@@ -152,7 +107,7 @@ class WordManagerComponent extends React.Component {
                     loadPrepositions = { () => this.loadWordsType(prepositionsLink, theme_prepositions)}
                 />}
                <div className="cards-wrapper">
-                    {this.state.screen === 'cards' && this.renderThemeWords(this.props.current_theme)}
+                    {this.state.screen === 'cards' && this.props.current_theme && this.renderThemeWords(this.props.current_theme)}
                </div>
                <BackButton disabled={this.state.mode === 'modebuttons'} clickBack={() => this.handleClickBack()} />
             </div>

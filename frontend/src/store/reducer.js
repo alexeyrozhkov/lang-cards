@@ -14,7 +14,29 @@ const initialState = {
     }
 };
 
+const themeMap = {
+    theme_verbs: 'verbs',
+    theme_nouns: 'nouns',
+    theme_prepositions: 'prepositions'
+}
 
+function getStateAfterProcessWord(theme, id, state) {
+    const field = themeMap[theme];
+    const result = processWord([...state[field].uncompleted], [...state[field].completed], id);
+    const completed = result.completed;
+    const uncompleted = result.uncompleted;
+    if(!completed) {
+        return {
+            ...state,
+            verbs: {...state[field], uncompleted: uncompleted}
+        }
+    }
+    
+    return {
+        ...state,
+        verbs: {...state[field], uncompleted: uncompleted, completed: completed}
+    }
+}
 
 
 export function reducer(state=initialState, action) {
@@ -65,54 +87,7 @@ export function reducer(state=initialState, action) {
             
             const {id} = action.payload;
 
-            if(state.current_theme === 'theme_verbs') {
-                const result = processWord([...state.verbs.uncompleted], [...state.verbs.completed], id);
-                const completed = result.completed;
-                const uncompleted = result.uncompleted;
-                if(!completed) {
-                    return {
-                        ...state,
-                        verbs: {...state.verbs, uncompleted: uncompleted}
-                    }
-                }
-                
-                return {
-                    ...state,
-                    verbs: {...state.verbs, uncompleted: uncompleted, completed: completed}
-                }
-            }
-            
-            if(state.current_theme === 'theme_nouns') {
-                const result = processWord([...state.nouns.uncompleted], [...state.nouns.completed], id);
-                const completed = result.completed;
-                const uncompleted = result.uncompleted;
-                if(!completed) {
-                    return {
-                        ...state,
-                        nouns: {...state.nouns, uncompleted: uncompleted}
-                    }
-                }
-                return {
-                    ...state,
-                    nouns: {...state.nouns, uncompleted: uncompleted, completed: completed}
-                }
-            }
-
-            if(state.current_theme === 'theme_prepositions') {
-                const result = processWord([...state.prepositions.uncompleted], [...state.prepositions.completed], id);
-                const completed = result.completed;
-                const uncompleted = result.uncompleted;
-                if(!completed) {
-                    return {
-                        ...state,
-                        prepositions: {...state.prepositions, uncompleted: uncompleted}
-                    }
-                }
-                return {
-                    ...state,
-                    prepositions: {...state.prepositions, uncompleted: uncompleted, completed: completed}
-                }
-            }
+            return getStateAfterProcessWord(state.current_theme, id, state);
         }
 
         case 'TEST_DONE': {
